@@ -21,7 +21,7 @@ class HomeCubit extends BaseCubit<HomeState, HomeViewData> {
 
   UserData get userData => _databaseRepository.user!;
 
-  Future<void> addCategory() async {
+  Future<void> addCategory({required String categoryName}) async {
     if (isBusy) return;
 
     await run(
@@ -29,7 +29,7 @@ class HomeCubit extends BaseCubit<HomeState, HomeViewData> {
         emit(const HomeLoading());
         final response = await _apiRepository.addCategory(
           request: AddCategoryRequest(
-            categoryname: "asdads",
+            categoryname: categoryName.toUpperCase(),
             companyid: userData.company,
           ),
         );
