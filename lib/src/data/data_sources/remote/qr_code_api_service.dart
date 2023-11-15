@@ -14,6 +14,6 @@ abstract class QrCodeApiService {
     @Field('reyon') required String reyon,
     @Field('category') required String category,
     @Field('productId') required String productId,
-    @Field('company') required String company,
+    @Field('company') required int company,
   });
 }

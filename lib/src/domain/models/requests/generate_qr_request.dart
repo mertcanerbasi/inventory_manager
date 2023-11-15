@@ -2,7 +2,7 @@ class GenerateQrRequest {
   String reyon;
   String category;
   String productId;
-  String company;
+  int company;
 
   GenerateQrRequest({
     required this.reyon,

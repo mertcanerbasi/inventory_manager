@@ -5,6 +5,7 @@ import 'package:route_map/route_map.dart';
 
 import '../../../config/router/router.routes.dart';
 import '../../cubits/navigation_cubit/navigation_cubit.dart';
+import '../create_qr_view/create_qr_view.dart';
 import '../home_view/home_view.dart';
 import '../../../utils/enums/navigation_bar_item.dart';
 import 'package:ionicons/ionicons.dart';
@@ -35,15 +36,12 @@ class RootView extends HookWidget {
             // );
             return const HomeView();
           } else if (state.navBarItem == NavBarItem.read) {
-            //TODO Create QR Code View
-            return Container(
-              color: Colors.blue,
-            );
-          } else {
-            //TODO Read QR Code View
+            //TODO : QR Code Reader
             return Container(
               color: Colors.green,
             );
+          } else {
+            return const CreateQrView();
           }
         },
       ),
@@ -62,7 +60,7 @@ class RootView extends HookWidget {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.qr_code_scanner),
-                label: "QR Kod Okut",
+                label: "Envanter Sayım",
               ),
               BottomNavigationBarItem(
                 icon: Icon(Ionicons.qr_code),

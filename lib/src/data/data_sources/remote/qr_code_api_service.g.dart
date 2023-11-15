@@ -23,7 +23,7 @@ class _QrCodeApiService implements QrCodeApiService {
     required String reyon,
     required String category,
     required String productId,
-    required String company,
+    required int company,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

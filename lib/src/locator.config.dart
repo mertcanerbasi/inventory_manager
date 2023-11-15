@@ -13,7 +13,7 @@ import 'package:flutter/material.dart' as _i7;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:get_storage/get_storage.dart' as _i6;
 import 'package:injectable/injectable.dart' as _i2;
-import 'package:inventory_manager/src/app_module.dart' as _i18;
+import 'package:inventory_manager/src/app_module.dart' as _i19;
 import 'package:inventory_manager/src/data/data_sources/remote/auth_service.dart'
     as _i4;
 import 'package:inventory_manager/src/data/data_sources/remote/qr_code_api_service.dart'
@@ -28,6 +28,8 @@ import 'package:inventory_manager/src/domain/repositories/database_repository.da
     as _i14;
 import 'package:inventory_manager/src/presentation/cubits/app_cubit/app_cubit.dart'
     as _i3;
+import 'package:inventory_manager/src/presentation/cubits/create_qr_cubit/create_qr_cubit.dart'
+    as _i18;
 import 'package:inventory_manager/src/presentation/cubits/home_cubit/home_cubit.dart'
     as _i13;
 import 'package:inventory_manager/src/presentation/cubits/login_cubit/login_cubit.dart'
@@ -88,8 +90,12 @@ extension GetItInjectableX on _i1.GetIt {
         ));
     gh.factory<_i17.SplashCubit>(
         () => _i17.SplashCubit(gh<_i14.DatabaseRepository>()));
+    gh.factory<_i18.CreateQrCubit>(() => _i18.CreateQrCubit(
+          gh<_i10.ApiRepository>(),
+          gh<_i14.DatabaseRepository>(),
+        ));
     return this;
   }
 }
 
-class _$AppModule extends _i18.AppModule {}
+class _$AppModule extends _i19.AppModule {}

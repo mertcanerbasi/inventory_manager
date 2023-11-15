@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'src/presentation/cubits/create_qr_cubit/create_qr_cubit.dart';
 
 import 'src/config/router/router.dart';
 import 'src/config/router/router.routes.dart';
@@ -45,6 +46,9 @@ class MainApp extends StatelessWidget {
         BlocProvider<HomeCubit>(
             create: (context) => getIt<HomeCubit>() //..generateQrCode(),
             ),
+        BlocProvider<CreateQrCubit>(
+          create: (context) => getIt<CreateQrCubit>(),
+        ),
       ],
       child: GestureDetector(
         onTap: () {

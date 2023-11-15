@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 class UserData extends Equatable {
   String accessToken;
   String refreshToken;
-  String company;
+  int company;
 
   UserData({
     required this.accessToken,
@@ -25,7 +25,7 @@ class UserData extends Equatable {
     return UserData(
       accessToken: map['accessToken'] as String,
       refreshToken: map['refreshToken'] as String,
-      company: map['company'] as String,
+      company: map['company'] as int,
     );
   }
 

@@ -26,7 +26,7 @@ class HomeCubit extends BaseCubit<HomeState, HomeViewData> {
             reyon: "1",
             category: "4",
             productId: "10123123",
-            company: "Koctas",
+            company: 1,
           ),
         );
 

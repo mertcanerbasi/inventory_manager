@@ -6,11 +6,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:route_map/route_map.dart';
-import '../../presentation/views/home_view/home_view.dart';
-import '../../presentation/views/app_settings_view/app_settings_view.dart';
-import '../../presentation/views/root_view/root_view.dart';
-import '../../presentation/views/login_view/login_view.dart';
-import '../../presentation/views/splash_view/splash_view.dart';
+import 'package:inventory_manager/src/presentation/views/home_view/home_view.dart';
+import 'package:inventory_manager/src/presentation/views/app_settings_view/app_settings_view.dart';
+import 'package:inventory_manager/src/presentation/views/root_view/root_view.dart';
+import 'package:inventory_manager/src/presentation/views/login_view/login_view.dart';
+import 'package:inventory_manager/src/presentation/views/splash_view/splash_view.dart';
+import 'package:inventory_manager/src/presentation/views/create_qr_view/create_qr_view.dart';
 
 class RouteMaps {
   static const String homeViewRoute = "/home_view";
@@ -18,6 +19,7 @@ class RouteMaps {
   static const String root = "/";
   static const String loginViewRoute = "login";
   static const String splashViewRoute = "splash";
+  static const String createQrViewRoute = "/create_qr_view";
 }
 
 Map<String, RouteModel> get routes => _routes;
@@ -37,6 +39,9 @@ final Map<String, RouteModel> _routes = {
   ),
   RouteMaps.splashViewRoute: RouteModel(
     (_) => const SplashView(),
+  ),
+  RouteMaps.createQrViewRoute: RouteModel(
+    (_) => const CreateQrView(),
   ),
 };
 Route? $onGenerateRoute(RouteSettings routeSettings,
@@ -70,4 +75,9 @@ class LoginViewRoute extends BaseRoute {
 class SplashViewRoute extends BaseRoute {
   SplashViewRoute() : super(RouteMaps.splashViewRoute);
   static const String name = RouteMaps.splashViewRoute;
+}
+
+class CreateQrViewRoute extends BaseRoute {
+  CreateQrViewRoute() : super(RouteMaps.createQrViewRoute);
+  static const String name = RouteMaps.createQrViewRoute;
 }
