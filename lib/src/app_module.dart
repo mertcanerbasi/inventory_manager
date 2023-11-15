@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:injectable/injectable.dart';
+import 'data/data_sources/remote/store_settings_service.dart';
 import 'utils/interceptors/error_interceptor.dart';
 import 'utils/interceptors/log_interceptor.dart';
 import 'utils/interceptors/token_interceptor.dart';
@@ -54,6 +55,10 @@ abstract class AppModule {
       );
   @lazySingleton
   AuthService get injectAuthService => AuthService(injectRetrofitAPI);
+
+  @lazySingleton
+  StoreSettingsService get injectStoreSettingsService =>
+      StoreSettingsService(injectRetrofitAPI);
 
   @singleton
   final GlobalKey<NavigatorState> mainNavigatorKey =

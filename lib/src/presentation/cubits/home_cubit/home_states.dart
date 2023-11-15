@@ -1,11 +1,10 @@
 part of 'home_cubit.dart';
 
 class HomeViewData {
-  final GenerateQrResponse? qrResponse;
+  final CustomResponse? addCategoryResponse;
   final DioException? error;
-
-  HomeViewData({
-    this.qrResponse,
+  const HomeViewData({
+    this.addCategoryResponse,
     this.error,
   });
 }

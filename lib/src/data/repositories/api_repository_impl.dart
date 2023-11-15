@@ -1,4 +1,6 @@
 import 'package:injectable/injectable.dart';
+import '../../domain/models/requests/add_category_request.dart';
+import '../../domain/models/responses/custom_response.dart';
 import '../../domain/models/responses/login_response.dart';
 import '../data_sources/remote/auth_service.dart';
 import '../data_sources/remote/qr_code_api_service.dart';
@@ -7,12 +9,15 @@ import '../../domain/models/responses/generate_qr_response.dart';
 import '../../domain/repositories/api_repository.dart';
 import '../../utils/resources/data_state.dart';
 import '../base/base_api_repository.dart';
+import '../data_sources/remote/store_settings_service.dart';
 
 @LazySingleton(as: ApiRepository)
 class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
   final QrCodeApiService _qrCodeApiService;
   final AuthService _authService;
-  ApiRepositoryImpl(this._qrCodeApiService, this._authService);
+  final StoreSettingsService _storeSettingsService;
+  ApiRepositoryImpl(
+      this._qrCodeApiService, this._authService, this._storeSettingsService);
   @override
   Future<DataState<GenerateQrResponse>> generateQrCode(
       {required GenerateQrRequest request}) async {
@@ -34,6 +39,17 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
       request: () => _authService.login(
         email: email,
         password: password,
+      ),
+    );
+  }
+
+  @override
+  Future<DataState<CustomResponse>> addCategory(
+      {required AddCategoryRequest request}) {
+    return getStateOf(
+      request: () => _storeSettingsService.addCategory(
+        categoryname: request.categoryname,
+        companyid: request.companyid,
       ),
     );
   }

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:route_map/route_map.dart';
 import '../../cubits/home_cubit/home_cubit.dart';
 import '../../../utils/constants/padding_constants.dart';
@@ -15,6 +16,22 @@ class HomeView extends HookWidget {
     final homeCubit = BlocProvider.of<HomeCubit>(context);
     //final appCubit = BlocProvider.of<AppCubit>(context);
     return Scaffold(
+      floatingActionButton: BlocConsumer<HomeCubit, HomeState>(
+        listener: (context, state) {
+          if (state is HomeSuccess) {
+            showToast("Kategori eklendi",
+                backgroundColor: Colors.green, position: ToastPosition.bottom);
+          }
+        },
+        builder: (context, state) {
+          return FloatingActionButton(
+            onPressed: () {
+              homeCubit.addCategory();
+            },
+            child: const Icon(Icons.logout),
+          );
+        },
+      ),
       body: SafeArea(
         child: Padding(
           padding: PaddingConstants.symmeticHorizontal20,

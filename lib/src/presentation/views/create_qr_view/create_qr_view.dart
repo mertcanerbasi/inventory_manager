@@ -7,7 +7,6 @@ import 'package:ionicons/ionicons.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:route_map/route_map.dart';
-import '../../../utils/constants/font_style_constants.dart';
 import '../../cubits/create_qr_cubit/create_qr_cubit.dart';
 import '../../../utils/constants/padding_constants.dart';
 
