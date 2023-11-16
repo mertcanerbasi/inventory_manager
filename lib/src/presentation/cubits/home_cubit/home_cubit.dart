@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import '../../../domain/models/responses/get_categories_response.dart';
 import '../../../domain/models/requests/add_category_request.dart';
 import '../../../domain/models/responses/custom_response.dart';
+import '../../../domain/models/responses/get_rayons_response.dart';
 import '../../../domain/models/responses/login_response.dart';
 import '../../../domain/repositories/api_repository.dart';
 import '../../../domain/repositories/database_repository.dart';
@@ -23,7 +24,9 @@ class HomeCubit extends BaseCubit<HomeState, HomeViewData?> {
   UserData get userData => _databaseRepository.user!;
 
   CustomResponse? addCategoryResponse;
+  CustomResponse? addRayonResponse;
   GetCategoriesResponse? getCategoriesResponse;
+  GetRayonsResponse? getRayonsResponse;
   CustomResponse? deleteCategoryResponse;
 
   Future<void> addCategory({required String categoryName}) async {
@@ -84,6 +87,50 @@ class HomeCubit extends BaseCubit<HomeState, HomeViewData?> {
 
         if (response is DataSuccess) {
           emit(HomeCreate(deleteCategoryResponse: response.data));
+        } else if (response is DataFailed) {
+          emit(HomeFailed(error: response.error));
+        }
+      },
+    );
+  }
+
+  Future<void> addRayon(
+      {required int categoryid, required String rayonname}) async {
+    if (isBusy) return;
+
+    await run(
+      () async {
+        emit(const HomeLoading());
+        final response = await _apiRepository.addReyon(
+            categoryid: categoryid,
+            rayonname: rayonname,
+            companyid: userData.company);
+
+        addRayonResponse = response.data;
+
+        if (response is DataSuccess) {
+          emit(HomeCreate(deleteCategoryResponse: response.data));
+        } else if (response is DataFailed) {
+          emit(HomeFailed(error: response.error));
+        }
+      },
+    );
+  }
+
+  Future<void> getRayons() async {
+    if (isBusy) return;
+
+    await run(
+      () async {
+        emit(const HomeLoading());
+        final response = await _apiRepository.getRayons(
+          companyid: userData.company,
+        );
+
+        getRayonsResponse = response.data;
+
+        if (response is DataSuccess) {
+          emit(HomeCreate(getRayonsResponse: response.data));
         } else if (response is DataFailed) {
           emit(HomeFailed(error: response.error));
         }

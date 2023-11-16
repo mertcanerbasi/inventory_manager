@@ -43,9 +43,7 @@ class MainApp extends StatelessWidget {
         BlocProvider<NavigationCubit>(
           create: (context) => getIt<NavigationCubit>(),
         ),
-        BlocProvider<HomeCubit>(
-          create: (context) => getIt<HomeCubit>()..getCategories(),
-        ),
+        BlocProvider<HomeCubit>(create: (context) => getIt<HomeCubit>()),
         BlocProvider<CreateQrCubit>(
           create: (context) => getIt<CreateQrCubit>(),
         ),

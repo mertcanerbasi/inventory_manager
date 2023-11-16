@@ -4,11 +4,15 @@ class HomeViewData {
   final CustomResponse? addCategoryResponse;
   final GetCategoriesResponse? getCategoriesResponse;
   final CustomResponse? deleteCategoryResponse;
+  final CustomResponse? addRayonResponse;
+  final GetRayonsResponse? getRayonsResponse;
   final DioException? error;
   const HomeViewData({
     this.addCategoryResponse,
     this.getCategoriesResponse,
     this.deleteCategoryResponse,
+    this.addRayonResponse,
+    this.getRayonsResponse,
     this.error,
   });
 }
@@ -44,9 +48,13 @@ final class HomeFailed extends HomeState {
 final class HomeCreate extends HomeState {
   HomeCreate(
       {GetCategoriesResponse? getCategoriesResponse,
-      CustomResponse? deleteCategoryResponse})
+      CustomResponse? deleteCategoryResponse,
+      CustomResponse? addRayonResponse,
+      GetRayonsResponse? getRayonsResponse})
       : super(
             homeViewData: HomeViewData(
                 getCategoriesResponse: getCategoriesResponse,
-                deleteCategoryResponse: deleteCategoryResponse));
+                deleteCategoryResponse: deleteCategoryResponse,
+                addRayonResponse: addRayonResponse,
+                getRayonsResponse: getRayonsResponse));
 }

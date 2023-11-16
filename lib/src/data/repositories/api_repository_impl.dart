@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import '../../domain/models/requests/add_category_request.dart';
 import '../../domain/models/responses/custom_response.dart';
 import '../../domain/models/responses/get_categories_response.dart';
+import '../../domain/models/responses/get_rayons_response.dart';
 import '../../domain/models/responses/login_response.dart';
 import '../data_sources/remote/auth_service.dart';
 import '../data_sources/remote/qr_code_api_service.dart';
@@ -70,6 +71,29 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
     return getStateOf(
       request: () => _storeSettingsService.deleteCategory(
         categoryid: categoryid,
+      ),
+    );
+  }
+
+  @override
+  Future<DataState<CustomResponse>> addReyon(
+      {required int categoryid,
+      required String rayonname,
+      required int companyid}) {
+    return getStateOf(
+      request: () => _storeSettingsService.addReyon(
+        categoryid: categoryid,
+        rayonname: rayonname,
+        companyid: companyid,
+      ),
+    );
+  }
+
+  @override
+  Future<DataState<GetRayonsResponse>> getRayons({required int companyid}) {
+    return getStateOf(
+      request: () => _storeSettingsService.getRayons(
+        companyid: companyid,
       ),
     );
   }

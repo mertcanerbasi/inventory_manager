@@ -4,6 +4,7 @@ import '../../../domain/models/responses/custom_response.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../../domain/models/responses/get_categories_response.dart';
+import '../../../domain/models/responses/get_rayons_response.dart';
 
 part 'store_settings_service.g.dart';
 
@@ -26,5 +27,17 @@ abstract class StoreSettingsService {
   @POST('/delete-category')
   Future<HttpResponse<CustomResponse>> deleteCategory({
     @Field('categoryid') required int categoryid,
+  });
+
+  @POST('/add-rayon')
+  Future<HttpResponse<CustomResponse>> addReyon({
+    @Field('categoryid') required int categoryid,
+    @Field('rayonname') required String rayonname,
+    @Field('companyid') required int companyid,
+  });
+
+  @POST('/get-rayons')
+  Future<HttpResponse<GetRayonsResponse>> getRayons({
+    @Field('companyid') required int companyid,
   });
 }

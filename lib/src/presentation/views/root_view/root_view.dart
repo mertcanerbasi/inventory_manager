@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:route_map/route_map.dart';
 
 import '../../../config/router/router.routes.dart';
+import '../../../utils/constants/app_strings.dart';
 import '../../cubits/navigation_cubit/navigation_cubit.dart';
 import '../create_qr_view/create_qr_view.dart';
 import '../home_view/home_view.dart';
@@ -20,6 +21,8 @@ class RootView extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
+        title: const Text(AppStrings.appName,
+            style: TextStyle(color: Colors.black)),
         actions: [
           IconButton(
             onPressed: () {

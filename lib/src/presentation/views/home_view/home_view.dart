@@ -23,6 +23,13 @@ class HomeView extends HookWidget {
     final TextEditingController reyonNameController = TextEditingController();
     final TabController tabController = useTabController(initialLength: 2);
 
+    useEffect(() {
+      homeCubit.getCategories().then((value) async {
+        await homeCubit.getRayons();
+      });
+      return null;
+    }, const []);
+
     //final appCubit = BlocProvider.of<AppCubit>(context);
     return Scaffold(
       appBar: TabBar(
@@ -407,6 +414,13 @@ class _CategoriesView extends StatelessWidget {
                                             children: [
                                               ElevatedButton(
                                                 onPressed: () async {
+                                                  Navigator.pop(dialogContext);
+                                                },
+                                                child: const Text(
+                                                    "Reyonları Görüntüle"),
+                                              ),
+                                              ElevatedButton(
+                                                onPressed: () async {
                                                   await homeCubit
                                                       .deleteCategory(
                                                           categoryid: category
@@ -544,8 +558,148 @@ class _RayonView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Reyonlar"),
-    );
+    return Padding(
+        padding: PaddingConstants.symmeticHorizontal20,
+        child: BlocConsumer<HomeCubit, HomeState>(
+            bloc: homeCubit,
+            listener: (context, state) {},
+            builder: (context, state) {
+              if (state is HomeLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return Padding(
+                  padding: PaddingConstants.symmeticVertical10,
+                  child: ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(
+                            height: 1.h,
+                          ),
+                      itemCount: homeCubit
+                          .getCategoriesResponse!.data!.categories!.length,
+                      itemBuilder: (context, index) {
+                        return ExpansionTile(
+                            title: Text(
+                              homeCubit.getCategoriesResponse!.data!.categories!
+                                  .elementAt(index)
+                                  .categoryname!,
+                              style: FontStyleConstants.mediumText,
+                            ),
+                            children: homeCubit.getRayonsResponse!.data!.rayons!
+                                .where((element) =>
+                                    element.categoryid ==
+                                    homeCubit.getCategoriesResponse!.data!
+                                        .categories!
+                                        .elementAt(index)
+                                        .categoryid)
+                                .map((e) => ListTile(
+                                      leading: const Icon(
+                                        Icons.shelves,
+                                        color: Colors.red,
+                                      ),
+                                      title: Text(
+                                        e.rayonname!,
+                                        style: FontStyleConstants.smallText,
+                                      ),
+                                    ))
+                                .toList()
+                              ..add(ListTile(
+                                leading: const Icon(
+                                  Icons.add,
+                                  color: Colors.red,
+                                ),
+                                title: Text("Reyon Ekle",
+                                    style:
+                                        FontStyleConstants.smallText.copyWith(
+                                      color: Colors.red,
+                                    )),
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    enableDrag: true,
+                                    isDismissible: true,
+                                    builder: (dialogContext) {
+                                      return Padding(
+                                        padding: PaddingConstants.symmetic20,
+                                        child: IntrinsicHeight(
+                                          child: Form(
+                                            key: formKeyReyon,
+                                            child: Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 2.h,
+                                                ),
+                                                TextFormField(
+                                                  controller:
+                                                      reyonNameController,
+                                                  autovalidateMode:
+                                                      AutovalidateMode
+                                                          .onUserInteraction,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    prefixIcon: Icon(
+                                                      Icons.shelves,
+                                                    ),
+                                                    labelText: "Reyon Adı",
+                                                    border: OutlineInputBorder(
+                                                        borderSide:
+                                                            BorderSide.none),
+                                                  ),
+                                                  validator: (value) {
+                                                    if (value?.isEmpty ==
+                                                        true) {
+                                                      return "Lütfen Reyon Giriniz";
+                                                    }
+                                                    return null;
+                                                  },
+                                                ),
+                                                SizedBox(
+                                                  height: 3.h,
+                                                ),
+                                                SizedBox(
+                                                  width: double.maxFinite,
+                                                  child: ElevatedButton(
+                                                    onPressed: () async {
+                                                      if (formKeyReyon
+                                                          .currentState!
+                                                          .validate()) {
+                                                        await homeCubit.addRayon(
+                                                            categoryid: homeCubit
+                                                                .getCategoriesResponse!
+                                                                .data!
+                                                                .categories!
+                                                                .elementAt(
+                                                                    index)
+                                                                .categoryid!,
+                                                            rayonname:
+                                                                reyonNameController
+                                                                    .text);
+                                                        await homeCubit
+                                                            .getRayons();
+                                                        reyonNameController
+                                                            .clear();
+                                                        Navigator.pop(
+                                                            dialogContext);
+                                                      }
+                                                    },
+                                                    child: const Text("Ekle"),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 2.h,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              )));
+                      }),
+                );
+              }
+            }));
   }
 }
