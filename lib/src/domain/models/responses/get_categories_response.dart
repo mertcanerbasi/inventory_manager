@@ -110,6 +110,13 @@ class Category extends Equatable {
     );
   }
 
+  //toJson
+  Map<String, dynamic> toJson() => {
+        'categoryid': categoryid,
+        'categoryname': categoryname,
+        'companyid': companyid,
+      };
+
   @override
   bool get stringify => true;
 

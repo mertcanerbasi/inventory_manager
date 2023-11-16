@@ -351,108 +351,186 @@ class _CategoriesView extends StatelessWidget {
             return const Center(
               child: CircularProgressIndicator(),
             );
+          } else if (homeCubit
+                  .getCategoriesResponse?.data?.categories?.isEmpty ==
+              true) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 3.h,
+                ),
+                Image.asset(
+                  "assets/images/box.png",
+                  height: 20.h,
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Center(
+                  child: Text(
+                    "Lütfen mağazanız için\nkategorileri ekleyin",
+                    style: FontStyleConstants.mediumText,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                SizedBox(
+                  height: 5.h,
+                  width: double.maxFinite,
+                  child: ElevatedButton.icon(
+                    icon: const Icon(Icons.add),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        enableDrag: true,
+                        isDismissible: true,
+                        builder: (dialogContext) {
+                          return Padding(
+                            padding: PaddingConstants.symmetic20,
+                            child: IntrinsicHeight(
+                              child: Form(
+                                key: formKeyCategory,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 2.h,
+                                    ),
+                                    TextFormField(
+                                      controller: categoryNameController,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      decoration: const InputDecoration(
+                                        prefixIcon: Icon(
+                                          Icons.list_outlined,
+                                        ),
+                                        labelText: "Kategori Adı",
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide.none),
+                                      ),
+                                      validator: (value) {
+                                        if (value?.isEmpty == true) {
+                                          return "Lütfen Kategori Giriniz";
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 3.h,
+                                    ),
+                                    SizedBox(
+                                      width: double.maxFinite,
+                                      child: ElevatedButton(
+                                        onPressed: () async {
+                                          if (formKeyCategory.currentState!
+                                              .validate()) {
+                                            await homeCubit.addCategory(
+                                                categoryName:
+                                                    categoryNameController
+                                                        .text);
+                                            categoryNameController.clear();
+                                            await homeCubit.getCategories();
+                                            Navigator.pop(dialogContext);
+                                          }
+                                        },
+                                        child: const Text("Ekle"),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 2.h,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    label: const Text("Kategori Ekle"),
+                  ),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+              ],
+            );
           } else {
             return Padding(
               padding: PaddingConstants.symmeticVertical10,
               child: Column(
                 children: [
-                  homeCubit.getCategoriesResponse?.data?.categories?.isEmpty ==
-                          true
-                      ? Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 3.h,
-                              ),
-                              Image.asset(
-                                "assets/images/box.png",
-                                height: 20.h,
-                              ),
-                              SizedBox(
-                                height: 2.h,
-                              ),
-                              Center(
-                                child: Text(
-                                  "Lütfen mağazanız için\nkategorileri ekleyin",
-                                  style: FontStyleConstants.mediumText,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : SizedBox(
-                          height: 60.h,
-                          child: GridView.builder(
-                            physics: const ClampingScrollPhysics(),
-                            itemCount: homeCubit.getCategoriesResponse!.data!
-                                .categories!.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                            ),
-                            itemBuilder: (context, index) {
-                              final category = homeCubit.getCategoriesResponse!
-                                  .data!.categories![index];
-                              return InkWell(
-                                onLongPress: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (dialogContext) {
-                                      return AlertDialog(
-                                        backgroundColor: Colors.white,
-                                        title: Text(
-                                          "Yapmak istediğiniz işlemi seçiniz",
-                                          textAlign: TextAlign.center,
-                                          style: FontStyleConstants.mediumText,
+                  SizedBox(
+                    height: 60.h,
+                    child: GridView.builder(
+                      physics: const ClampingScrollPhysics(),
+                      itemCount: homeCubit
+                          .getCategoriesResponse!.data!.categories!.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                      ),
+                      itemBuilder: (context, index) {
+                        final category = homeCubit
+                            .getCategoriesResponse!.data!.categories![index];
+                        return InkWell(
+                          onLongPress: () {
+                            showDialog(
+                              context: context,
+                              builder: (dialogContext) {
+                                return AlertDialog(
+                                  backgroundColor: Colors.white,
+                                  title: Text(
+                                    "Yapmak istediğiniz işlemi seçiniz",
+                                    textAlign: TextAlign.center,
+                                    style: FontStyleConstants.mediumText,
+                                  ),
+                                  content: IntrinsicHeight(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            Navigator.pop(dialogContext);
+                                          },
+                                          child:
+                                              const Text("Reyonları Görüntüle"),
                                         ),
-                                        content: IntrinsicHeight(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: [
-                                              ElevatedButton(
-                                                onPressed: () async {
-                                                  Navigator.pop(dialogContext);
-                                                },
-                                                child: const Text(
-                                                    "Reyonları Görüntüle"),
-                                              ),
-                                              ElevatedButton(
-                                                onPressed: () async {
-                                                  await homeCubit
-                                                      .deleteCategory(
-                                                          categoryid: category
-                                                              .categoryid!);
-                                                  await homeCubit
-                                                      .getCategories();
-                                                  Navigator.pop(dialogContext);
-                                                },
-                                                child: const Text(
-                                                    "Kategoriyi Sil"),
-                                              ),
-                                            ],
-                                          ),
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            await homeCubit.deleteCategory(
+                                                categoryid:
+                                                    category.categoryid!);
+                                            await homeCubit.getCategories();
+                                            await homeCubit.getRayons();
+                                            Navigator.pop(dialogContext);
+                                          },
+                                          child: const Text("Kategoriyi Sil"),
                                         ),
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Card(
-                                    color: Colors.red,
-                                    child: Center(
-                                      child: Text(category.categoryname!,
-                                          textAlign: TextAlign.center,
-                                          style: FontStyleConstants.mediumText
-                                              .copyWith(
-                                            color: Colors.white,
-                                          )),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: Card(
+                              color: Colors.red,
+                              child: Center(
+                                child: Text(category.categoryname!,
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        FontStyleConstants.mediumText.copyWith(
+                                      color: Colors.white,
                                     )),
-                              );
-                            },
-                          ),
-                        ),
+                              )),
+                        );
+                      },
+                    ),
+                  ),
                   const Spacer(),
                   SizedBox(
                     height: 5.h,
@@ -567,6 +645,31 @@ class _RayonView extends StatelessWidget {
               if (state is HomeLoading) {
                 return const Center(
                   child: CircularProgressIndicator(),
+                );
+              } else if (homeCubit
+                      .getCategoriesResponse?.data?.categories?.isEmpty ==
+                  true) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 3.h,
+                    ),
+                    Image.asset(
+                      "assets/images/box.png",
+                      height: 20.h,
+                    ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    Center(
+                      child: Text(
+                        "Lütfen mağazanız için\nkategorileri ekleyin",
+                        style: FontStyleConstants.mediumText,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
                 );
               } else {
                 return Padding(

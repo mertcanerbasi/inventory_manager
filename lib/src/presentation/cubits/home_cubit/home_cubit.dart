@@ -64,6 +64,8 @@ class HomeCubit extends BaseCubit<HomeState, HomeViewData?> {
         );
 
         getCategoriesResponse = response.data;
+        _databaseRepository
+            .setCategories(getCategoriesResponse!.data!.categories!);
 
         if (response is DataSuccess) {
           emit(HomeCreate(getCategoriesResponse: response.data));
@@ -103,7 +105,7 @@ class HomeCubit extends BaseCubit<HomeState, HomeViewData?> {
         emit(const HomeLoading());
         final response = await _apiRepository.addReyon(
             categoryid: categoryid,
-            rayonname: rayonname,
+            rayonname: rayonname.toUpperCase(),
             companyid: userData.company);
 
         addRayonResponse = response.data;
@@ -128,6 +130,7 @@ class HomeCubit extends BaseCubit<HomeState, HomeViewData?> {
         );
 
         getRayonsResponse = response.data;
+        _databaseRepository.setRayons(getRayonsResponse!.data!.rayons!);
 
         if (response is DataSuccess) {
           emit(HomeCreate(getRayonsResponse: response.data));

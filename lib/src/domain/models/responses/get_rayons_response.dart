@@ -93,6 +93,16 @@ class Rayon extends Equatable {
     this.companyid,
   });
 
+  //toJson
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'rayonid': rayonid,
+      'rayonname': rayonname,
+      'categoryid': categoryid,
+      'companyid': companyid,
+    };
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'rayonid': rayonid,

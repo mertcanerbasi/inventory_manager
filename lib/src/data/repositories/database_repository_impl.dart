@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
+import '../../domain/models/responses/get_categories_response.dart';
+import '../../domain/models/responses/get_rayons_response.dart';
 import '../../domain/models/responses/login_response.dart';
 import '../../domain/repositories/database_repository.dart';
 import '../../utils/resources/encrypt_storage.dart';
@@ -43,5 +45,35 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
     UserData? tempUser = user;
     tempUser?.accessToken = accessToken;
     return _getStorage.write("user", jsonEncode(tempUser?.toMap()));
+  }
+
+  @override
+  Future setCategories(List<Category> categories) {
+    return _getStorage.write("categories", jsonEncode(categories));
+  }
+
+  @override
+  Future setRayons(List<Rayon> rayons) {
+    return _getStorage.write("rayons", jsonEncode(rayons));
+  }
+
+  @override
+  List<Category>? getCategories() {
+    String? readData = _getStorage.read("categories");
+    if (readData != null) {
+      List<dynamic> json = jsonDecode(readData);
+      return List<Category>.from(json.map((x) => Category.fromMap(x)));
+    }
+    return null;
+  }
+
+  @override
+  List<Rayon>? getRayons() {
+    String? readData = _getStorage.read("rayons");
+    if (readData != null) {
+      List<dynamic> json = jsonDecode(readData);
+      return List<Rayon>.from(json.map((x) => Rayon.fromMap(x)));
+    }
+    return null;
   }
 }
