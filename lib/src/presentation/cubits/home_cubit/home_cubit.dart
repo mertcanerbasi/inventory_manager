@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import '../../../domain/models/responses/get_categories_response.dart';
 import '../../../domain/models/requests/add_category_request.dart';
 import '../../../domain/models/responses/custom_response.dart';
 import '../../../domain/models/responses/login_response.dart';
@@ -12,14 +13,18 @@ import '../../../utils/resources/data_state.dart';
 part 'home_states.dart';
 
 @injectable
-class HomeCubit extends BaseCubit<HomeState, HomeViewData> {
+class HomeCubit extends BaseCubit<HomeState, HomeViewData?> {
   final ApiRepository _apiRepository;
   final DatabaseRepository _databaseRepository;
 
   HomeCubit(this._apiRepository, this._databaseRepository)
-      : super(const HomeCreate(), const HomeViewData());
+      : super(HomeCreate(), null);
 
   UserData get userData => _databaseRepository.user!;
+
+  CustomResponse? addCategoryResponse;
+  GetCategoriesResponse? getCategoriesResponse;
+  CustomResponse? deleteCategoryResponse;
 
   Future<void> addCategory({required String categoryName}) async {
     if (isBusy) return;
@@ -34,9 +39,51 @@ class HomeCubit extends BaseCubit<HomeState, HomeViewData> {
           ),
         );
 
+        addCategoryResponse = response.data;
+
         if (response is DataSuccess) {
-          emit(HomeSuccess(
-              homeViewData: HomeViewData(addCategoryResponse: response.data)));
+          emit(HomeSuccess(addCategoryResponse: response.data));
+        } else if (response is DataFailed) {
+          emit(HomeFailed(error: response.error));
+        }
+      },
+    );
+  }
+
+  Future<void> getCategories() async {
+    if (isBusy) return;
+
+    await run(
+      () async {
+        emit(const HomeLoading());
+        final response = await _apiRepository.getCategories(
+          companyid: userData.company,
+        );
+
+        getCategoriesResponse = response.data;
+
+        if (response is DataSuccess) {
+          emit(HomeCreate(getCategoriesResponse: response.data));
+        } else if (response is DataFailed) {
+          emit(HomeFailed(error: response.error));
+        }
+      },
+    );
+  }
+
+  Future<void> deleteCategory({required int categoryid}) async {
+    if (isBusy) return;
+
+    await run(
+      () async {
+        emit(const HomeLoading());
+        final response =
+            await _apiRepository.deleteCategory(categoryid: categoryid);
+
+        deleteCategoryResponse = response.data;
+
+        if (response is DataSuccess) {
+          emit(HomeCreate(deleteCategoryResponse: response.data));
         } else if (response is DataFailed) {
           emit(HomeFailed(error: response.error));
         }

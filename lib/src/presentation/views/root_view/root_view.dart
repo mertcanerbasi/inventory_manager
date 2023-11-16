@@ -19,6 +19,7 @@ class RootView extends HookWidget {
     final navigationCubit = BlocProvider.of<NavigationCubit>(context);
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         actions: [
           IconButton(
             onPressed: () {

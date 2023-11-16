@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import '../../domain/models/requests/add_category_request.dart';
 import '../../domain/models/responses/custom_response.dart';
+import '../../domain/models/responses/get_categories_response.dart';
 import '../../domain/models/responses/login_response.dart';
 import '../data_sources/remote/auth_service.dart';
 import '../data_sources/remote/qr_code_api_service.dart';
@@ -50,6 +51,25 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
       request: () => _storeSettingsService.addCategory(
         categoryname: request.categoryname,
         companyid: request.companyid,
+      ),
+    );
+  }
+
+  @override
+  Future<DataState<GetCategoriesResponse>> getCategories(
+      {required int companyid}) {
+    return getStateOf(
+      request: () => _storeSettingsService.getCategories(
+        companyid: companyid,
+      ),
+    );
+  }
+
+  @override
+  Future<DataState<CustomResponse>> deleteCategory({required int categoryid}) {
+    return getStateOf(
+      request: () => _storeSettingsService.deleteCategory(
+        categoryid: categoryid,
       ),
     );
   }

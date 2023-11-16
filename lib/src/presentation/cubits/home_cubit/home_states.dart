@@ -2,15 +2,20 @@ part of 'home_cubit.dart';
 
 class HomeViewData {
   final CustomResponse? addCategoryResponse;
+  final GetCategoriesResponse? getCategoriesResponse;
+  final CustomResponse? deleteCategoryResponse;
   final DioException? error;
   const HomeViewData({
     this.addCategoryResponse,
+    this.getCategoriesResponse,
+    this.deleteCategoryResponse,
     this.error,
   });
 }
 
 abstract class HomeState extends Equatable {
   final HomeViewData? homeViewData;
+
   final DioException? error;
   const HomeState({
     this.homeViewData,
@@ -26,7 +31,10 @@ final class HomeLoading extends HomeState {
 }
 
 final class HomeSuccess extends HomeState {
-  const HomeSuccess({super.homeViewData});
+  HomeSuccess({CustomResponse? addCategoryResponse})
+      : super(
+            homeViewData:
+                HomeViewData(addCategoryResponse: addCategoryResponse));
 }
 
 final class HomeFailed extends HomeState {
@@ -34,5 +42,11 @@ final class HomeFailed extends HomeState {
 }
 
 final class HomeCreate extends HomeState {
-  const HomeCreate();
+  HomeCreate(
+      {GetCategoriesResponse? getCategoriesResponse,
+      CustomResponse? deleteCategoryResponse})
+      : super(
+            homeViewData: HomeViewData(
+                getCategoriesResponse: getCategoriesResponse,
+                deleteCategoryResponse: deleteCategoryResponse));
 }
